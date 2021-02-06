@@ -16,6 +16,6 @@ class P04Tests extends AnyFunSuite:
   test("a single element list") {
     assert(1 == length(List(1)))
   }
-  test("list with more than 1 elements") {
+  test("list with more than 1 element") {
     assert(6 === length(List(1,1,2,3,5,8)))
   }

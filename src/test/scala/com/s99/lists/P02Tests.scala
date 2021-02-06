@@ -22,6 +22,6 @@ class P02Tests extends AnyFunSuite:
       penultimate(List(1))
     }
   }
-  test("list with more than 1 elements") {
+  test("list with more than 1 element") {
     assert(5 === penultimate(List(1,1,2,3,5,8)))
   }

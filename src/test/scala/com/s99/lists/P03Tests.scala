@@ -22,6 +22,6 @@ class P03Tests extends AnyFunSuite:
       nth(1, List(1))
     }
   }
-  test("list with more than 1 elements") {
+  test("list with more than 1 element") {
     assert(2 === nth(2, List(1,1,2,3,5,8)))
   }
