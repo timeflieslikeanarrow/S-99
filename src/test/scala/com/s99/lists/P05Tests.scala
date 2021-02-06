@@ -3,10 +3,13 @@ package com.s99.lists
 import org.scalatest.funsuite.AnyFunSuite
 
 //Find the number of elements of a list
-def reverse[T](list: List[T]): List[T] = list match {
-  case Nil => Nil
-  case x::xs => reverse(xs) ++ List(x)
-}
+def reverse[T](list: List[T]): List[T] = 
+  def iter(list: List[T], acc: List[T]): List[T] = list match {
+    case Nil => acc
+    case x :: xs => iter(xs, x :: acc)
+  }
+
+  iter(list, List())
 
 class P05Tests extends AnyFunSuite:
   test("empty list") {
