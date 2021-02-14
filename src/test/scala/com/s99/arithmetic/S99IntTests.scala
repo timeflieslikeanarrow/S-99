@@ -30,7 +30,7 @@ class S99IntTests extends AnyFunSuite:
     assert(Map(3 -> 2, 5 -> 1, 7 -> 1) == 315.primeFactorMultiplicity)
   }
 
-  test("P37 -- Calculate Euler's totient function phi(m) (improved)") {
+  test("P37 - Calculate Euler's totient function phi(m) (improved)") {
     assert((2-1) * math.pow(2,1-1) * (5-1) * math.pow(5, 1-1)  === 10.totientImproved)
     assert((3-1) * math.pow(3, 2-1) * (5-1) * math.pow(5, 1-1) * (7-1) * math.pow(7, 1-1) === 315.totientImproved)
   }
@@ -56,11 +56,11 @@ class S99IntTests extends AnyFunSuite:
     assert(timeElapsed1 > timeElapsed2)
   }
 
-  test("P39 -- A list of prime numbers") {
+  test("P39 - A list of prime numbers") {
     assert(List(7, 11, 13, 17, 19, 23, 29, 31) === listPrimesInRange(7 to 31))
   }
 
-  test("P40 -- Goldbach's conjecture") {
+  test("P40 - Goldbach's conjecture") {
     assertThrows[IllegalArgumentException] {
       2.goldbach
     }
@@ -72,7 +72,7 @@ class S99IntTests extends AnyFunSuite:
     assert((5, 23) == 28.goldbach)
   }
   
-  test("P41 -- A list of Goldbach compositions") {
+  test("P41 - A list of Goldbach compositions") {
     info("printGoldbachList")
     assert(List((10, (3,7)),
       (12, (5,7)),
