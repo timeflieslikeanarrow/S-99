@@ -37,6 +37,39 @@ object S99Logic:
         iter(i+1, result)
           
     iter(0, List())
+  
+  //a simple implementation of Huffman Coding
+  def huffman(frequencies: List[(String, Int)]): List[(String, String)] =
+    val children = scala.collection.mutable.Map[String, List[String]]()
+    val pq = scala.collection.mutable.PriorityQueue.empty[(Int, String)].reverse
+    
+    def collect() =
+      val revereseFrequencies = frequencies.map(_.swap)
+      revereseFrequencies.foreach(pq.enqueue(_))
+      while pq.size >= 2 do
+        val (w1, item1) = pq.dequeue()
+        val (w2, item2) = pq.dequeue()
+        pq.enqueue((w1+w2, item1+item2))
+        children(item1 + item2) = List(item1, item2)
+
+    val result = scala.collection.mutable.ListBuffer[(String, String)]()
+    def coding(parent: String, code: String): Unit =
+      if children.contains(parent) then
+        val childList = children.get(parent).get
+        val left = childList(0)
+        val right = childList(1)
+        coding(left, code + "0")
+        coding(right, code + "1")
+      else
+        result += parent -> code
+        
+    collect()
+    println(pq)
+    println(children)
+    val (w, root) = pq.dequeue()
+    coding (root, "")
+    
+    result.toList
 
 class Bool(truth: Boolean):
   import Bool._
