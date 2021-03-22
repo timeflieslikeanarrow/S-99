@@ -5,6 +5,8 @@ sealed abstract class Tree[+T]:
   def isSymmetric: Boolean
   def leafCount: Int = 0
   def internalList: List[T] = List()
+  def atLevel(level: Int): List[T] = List()
+  def addValue[U >: T](value:U)(using ordering: Ordering[U]): Tree[U] = Node(value)
 
 case class Node[+T](value: T, left: Tree[T], right: Tree[T]) extends Tree[T] {
   override def isMirrofOf[U >: T](tree: Tree[U]): Boolean =
@@ -19,9 +21,20 @@ case class Node[+T](value: T, left: Tree[T], right: Tree[T]) extends Tree[T] {
 
   override def internalList: List[T] = (left, right) match {
     case (End, End) => List()
-    case _ => value +: (left.internalList ::: right.internalList)
+    case _ => value +: (left.internalList ++ right.internalList)
   }
-  
+
+  override def atLevel(level: Int): List[T] = 
+    require(level >= 0)
+    if (level == 1) List(value)
+    else left.atLevel(level - 1) ++ right.atLevel(level - 1)
+
+  override def addValue[U >: T](value: U)(using ordering: Ordering[U]) : Tree[U] =
+    if value == this.value then this
+    else if ordering.compare(value,this.value) < 0 then 
+      Node(this.value, left.addValue(value), right)
+    else Node(this.value, left, right.addValue(value))
+
   override def isSymmetric: Boolean = left.isMirrofOf(right)
   override def toString = "T(" + value.toString + " " + left.toString + " " + right.toString + ")"
 }
