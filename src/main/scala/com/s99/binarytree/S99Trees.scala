@@ -7,6 +7,40 @@ sealed abstract class Tree[+T]:
   def internalList: List[T] = List()
   def atLevel(level: Int): List[T] = List()
   def addValue[U >: T](value:U)(using ordering: Ordering[U]): Tree[U] = Node(value)
+  def toString2: String
+
+object Tree:
+  def findSeparator(s: String): Int = {
+    var leftParentCount = 0
+    var commaCount = 0
+    for (i <- 0 until s.length) {
+      if (s(i) == ',') {
+        if (leftParentCount == 0) return i
+        else commaCount += 1
+      } else if (s(i) == '(') {
+        leftParentCount += 1
+      } else if (s(i) == ')') {
+        leftParentCount -= 1
+        if (commaCount > 0)
+          commaCount -= 1
+      }
+    }
+
+    s.length
+  }
+
+  def fromString(s: String): Tree[Char] = {
+    if (s.length == 0) End
+    else if (s.length == 1) Node(s(0))
+    else {
+      val value = s(0)
+      val rest = s.dropRight(1).drop(2)
+      val separatorIndex = findSeparator(rest)
+      val left = rest.substring(0, separatorIndex)
+      val right = rest.substring(separatorIndex + 1)
+      Node(value, fromString(left), fromString(right))
+    }
+  }
 
 case class Node[+T](value: T, left: Tree[T], right: Tree[T]) extends Tree[T] {
   override def isMirrofOf[U >: T](tree: Tree[U]): Boolean =
@@ -37,6 +71,11 @@ case class Node[+T](value: T, left: Tree[T], right: Tree[T]) extends Tree[T] {
 
   override def isSymmetric: Boolean = left.isMirrofOf(right)
   override def toString = "T(" + value.toString + " " + left.toString + " " + right.toString + ")"
+
+  override def toString2: String = {
+    if (left == End && right == End) s"$value"
+    else s"$value(${left.toString2},${right.toString2})"
+  }
 }
 
 case object End extends Tree[Nothing] {
@@ -46,6 +85,8 @@ case object End extends Tree[Nothing] {
   
   override def isSymmetric: Boolean = true
   override def toString = "."
+
+  override def toString2: String = ""
 }
 
 object Node {

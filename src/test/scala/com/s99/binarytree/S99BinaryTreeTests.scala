@@ -33,4 +33,26 @@ class S99BinaryTreeTests extends AnyFunSuite:
     assert(List('b', 'c') === Node('a', Node('b'), Node('c', Node('d'), Node('e'))).atLevel(2))
     assert(List('d', 'e') === Node('a', Node('b'), Node('c', Node('d'), Node('e'))).atLevel(3))
   }
-  
+
+  test("P67 (**) A string representation of binary trees -- toString2") {
+    assert("a(b(d,e),c(,f(g,)))" ===
+      Node('a', Node('b', Node('d'), Node('e')), Node('c', End, Node('f', Node('g'), End))).toString2
+    )
+  }
+
+  test("P67 (**) A string representation of binary trees -- findSeparator") {
+    assert(1 === Tree.findSeparator("a,b"))
+    assert(6 === Tree.findSeparator("a(b,c),d"))
+  }
+
+  test("P67 (**) A string representation of binary trees -- fromString") {
+    assert(End === Tree.fromString(""))
+
+    assert(Node('a') === Tree.fromString("a"))
+
+    assert(Node('a', Node('b'), Node('c')) === Tree.fromString("a(b,c)"))
+
+    assert(Node('a', Node('b', Node('d'), Node('e')), Node('c', End, Node('f', Node('g'), End))) ===
+      Tree.fromString("a(b(d,e),c(,f(g,)))"))
+
+  }
